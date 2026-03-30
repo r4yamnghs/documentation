@@ -50,6 +50,11 @@ Workshops
 .. toctree::
    :maxdepth: 1
 
+  sp_concepts_with_mmsc/index
+
+.. toctree::
+   :maxdepth: 1
+
    workshop_what_sw_for_sdr/index
 
 
