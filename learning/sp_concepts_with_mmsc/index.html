@@ -97,16 +97,23 @@
         <nav>
           <ul>
 <li><a class="reference internal" href="#">Signal Processing Concepts with ADALM-MMSC</a><ul>
-<li><a class="reference internal" href="#introduction">Introduction</a></li>
-<li><a class="reference internal" href="#fft-fundamentals">FFT Fundamentals</a></li>
-<li><a class="reference internal" href="#sinc-folding-concepts">Sinc Folding Concepts</a></li>
-<li><a class="reference internal" href="#integrated-noise-in-oversampled-adcs">Integrated Noise in Oversampled ADCs</a></li>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#user-guide">User Guide</a><ul>
 <li><a class="reference internal" href="#using-the-detect-sample-frequency-script">Using the Detect Sample Frequency Script</a></li>
 <li><a class="reference internal" href="#using-the-frequency-sweep-script">Using the Frequency Sweep Script</a></li>
 <li><a class="reference internal" href="#using-the-ad4080-sink-script">Using the AD4080 Sink Script</a></li>
 <li><a class="reference internal" href="#using-the-interactive-sinc-folding-script">Using the Interactive Sinc Folding Script</a></li>
 <li><a class="reference internal" href="#using-the-noise-sweep-script">Using the Noise Sweep Script</a></li>
-<li><a class="reference internal" href="#practical-notes">Practical Notes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#developer-overview">Developer Overview</a><ul>
+<li><a class="reference internal" href="#fft-fundamentals">FFT Fundamentals</a></li>
+<li><a class="reference internal" href="#sinc-folding-concepts">Sinc Folding Concepts</a></li>
+<li><a class="reference internal" href="#integrated-noise-in-oversampled-adcs">Integrated Noise in Oversampled ADCs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#developer-guide">Developer Guide</a></li>
+<li><a class="reference internal" href="#help-and-support">Help and Support</a></li>
 </ul>
 </li>
 </ul>
@@ -810,83 +817,22 @@ Content on this topic
 <p class="admonition-title">Note</p>
 <p>This is a work in progress. Raya is working on this docu!</p>
 </div>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
-<p>Compressed Introduction Here. All scripts that will be used in this tutorial are
-available in my Repository:</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This document provides a practical introduction to signal‑processing concepts
+using the <strong>AD4080 oversampled ADC</strong>, the <strong>ADALM2000 (M2K)</strong>, and the <strong>MMSC
+platform</strong>. It combines theoretical explanations with interactive Python scripts
+to demonstrate frequency‑domain analysis, oversampling, digital filtering, and
+noise behavior in a real mixed‑signal measurement setup.</p>
+<p>The focus is on FFT‑based analysis, sinc filter behavior, and integrated noise
+effects, allowing users to validate theoretical expectations through direct
+measurement. All scripts referenced in this tutorial are available in the
+associated repository.</p>
 </section>
-<section id="fft-fundamentals">
-<h2>FFT Fundamentals<a class="headerlink" href="#fft-fundamentals" title="Link to this heading"></a></h2>
-<p>The <strong>Fast Fourier Transform (FFT)</strong> is a numerical method that converts a
-sequence of time‑domain samples into their corresponding <strong>frequency‑domain</strong>
-representation. Instead of viewing how a signal changes over time, the FFT
-reveals which sinusoidal components are present and how strong they are. This
-makes it a central tool for analyzing ADC behavior, harmonic content, and noise
-performance in mixed‑signal systems.</p>
-<p>When capturing data from the <strong>AD4080 evaluation board</strong>, the FFT enables
-identification of the dominant input tone, harmonics, and broadband noise
-components. It also provides an indirect but accurate way to observe how the
-ADC’s sampling frequency affects the spacing of frequency bins and the placement
-of spectral peaks.</p>
-<p>An FFT produces a fixed number of equally spaced frequency bins. The spacing
-between bins—referred to as the <strong>frequency resolution</strong>—is determined by the
-sampling rate and the FFT length:</p>
-<p><span class="math notranslate nohighlight">\(f = \frac{f_s}{N}\)</span></p>
-<p>Where:
-- <span class="math notranslate nohighlight">\(f_s\)</span> is the sampling frequency
-- <span class="math notranslate nohighlight">\(N\)</span> is the number of samples in the FFT</p>
-<p>The frequency represented by bin <span class="math notranslate nohighlight">\(k\)</span> is:</p>
-<p><span class="math notranslate nohighlight">\(f_k = \frac{k}{N} \cdot f_s\)</span></p>
-<p>The bin with the highest magnitude corresponds to the strongest sinusoidal
-component in the signal. If the input frequency is known, its location within
-the FFT can be used to estimate the sampling frequency:</p>
-<p><span class="math notranslate nohighlight">\(f_s = \frac{f_{in} \cdot N}{k}\)</span></p>
-<p>These relationships form the basis for all frequency‑domain tools used in this
-tutorial, including sampling‑frequency detection, frequency sweeping, and the
-AD4080 sink script’s Fourier analysis.</p>
-</section>
-<section id="sinc-folding-concepts">
-<h2>Sinc Folding Concepts<a class="headerlink" href="#sinc-folding-concepts" title="Link to this heading"></a></h2>
-<p>Oversampling ADCs such as the AD4080 use digital decimation filters to reduce
-output data rate while suppressing out-of-band noise. These filters are commonly
-implemented as sinc (sin(x)/x) filters, which exhibit a repeating frequency
-response made up of lobes and nulls.</p>
-<p>As the ADC output sample rate is reduced through decimation, signal and noise
-energy outside the baseband folds back into the Nyquist band in a predictable
-way defined by the sinc filter response. This effect is known as <em>sinc folding</em>.
-The shape and severity of the folding depend on both the filter type (sinc1,
-sinc5, sinc5 + PF) and the oversampling ratio (OSR).</p>
-<p>Higher-order sinc filters provide stronger attenuation near DC but introduce
-more pronounced spectral shaping. Increasing OSR reduces the effective signal
-bandwidth and increases noise suppression, but also moves the folding points
-closer together in frequency. Visualizing these effects helps build intuition
-for how digital filtering influences noise, bandwidth, and aliasing behavior in
-high-resolution ADC systems.</p>
-<p>This script demonstrates sinc folding interactively by injecting controlled,
-band-limited noise into the AD4080 and observing how the spectrum is shaped by
-different digital filter and decimation settings.</p>
-</section>
-<section id="integrated-noise-in-oversampled-adcs">
-<h2>Integrated Noise in Oversampled ADCs<a class="headerlink" href="#integrated-noise-in-oversampled-adcs" title="Link to this heading"></a></h2>
-<p>Oversampling analog‑to‑digital converters (ADCs) reduce in‑band noise by sampling
-the input signal at a rate much higher than the Nyquist frequency and then
-applying digital decimation filters to lower the output data rate. This digital
-filtering stage suppresses out‑of‑band content while shaping the spectrum of the
-remaining noise.</p>
-<p>In many precision ADCs, decimation filters are implemented as sinc filters, whose
-frequency responses feature regularly spaced nulls and passband droop that
-depends on filter order. As a result, wideband (white) noise is not passed
-uniformly through the converter; instead, its contribution to the output noise
-is weighted by the magnitude‑squared sinc response.</p>
-<p>The total RMS noise observed at the ADC output therefore depends on the
-integration of noise power across frequency, as shaped by the selected sinc
-filter and oversampling ratio. By examining how integrated noise and noise
-spectral density vary with bandwidth, filter order, and decimation, it is
-possible to gain insight into noise shaping, folding behavior, and effective
-signal bandwidth in oversampled data converters.</p>
-</section>
+<section id="user-guide">
+<h2>User Guide<a class="headerlink" href="#user-guide" title="Link to this heading"></a></h2>
 <section id="using-the-detect-sample-frequency-script">
-<h2>Using the Detect Sample Frequency Script<a class="headerlink" href="#using-the-detect-sample-frequency-script" title="Link to this heading"></a></h2>
+<h3>Using the Detect Sample Frequency Script<a class="headerlink" href="#using-the-detect-sample-frequency-script" title="Link to this heading"></a></h3>
 <p>To run the <strong>sampling frequency detection (Fs Detect) script</strong>, begin by
 powering up both the <strong>ADALM2000</strong> and the <strong>MMSC board</strong> equipped with the
 <strong>MAX32666FTHR microcontroller</strong>.</p>
@@ -921,17 +867,16 @@ error percentage is displayed.</p>
 </figure>
 <p>Adjusting the physical clock on the AD4080 board causes the ADC sampling
 frequency to change. This shift is reflected in the FFT output and calculated
-sampling frequency in real time, validating clock control through frequency-
-domain analysis.</p>
+sampling frequency in real time.</p>
+<p>—</p>
 </section>
 <section id="using-the-frequency-sweep-script">
-<h2>Using the Frequency Sweep Script<a class="headerlink" href="#using-the-frequency-sweep-script" title="Link to this heading"></a></h2>
+<h3>Using the Frequency Sweep Script<a class="headerlink" href="#using-the-frequency-sweep-script" title="Link to this heading"></a></h3>
 <p>To run the <strong>frequency sweep script</strong>, begin by connecting the <strong>ADALM2000</strong> and
 the <strong>AD4080 evaluation board</strong> to your computer. Ensure that the correct USB
 interfaces and serial communication ports are specified in the script arguments.
 The front‑end sampling frequency must match the rotary switch setting on the
-AD4080 board—this is typically <strong>40 MHz</strong>, and the script expects this value to
-be set correctly before acquisition begins.</p>
+AD4080 board—this is typically <strong>40 MHz</strong>.</p>
 <p>Once the hardware is powered and connected, run the script using Python. The
 graphical interface will launch automatically, providing user‑configurable input
 fields for sweep parameters including:</p>
@@ -942,151 +887,140 @@ fields for sweep parameters including:</p>
 <li><p><strong>OSR (Oversampling Ratio)</strong></p></li>
 </ul>
 <p>Additionally, the interface offers radio buttons to select the desired <strong>digital
-filter type</strong>, allowing you to compare responses across different filtering
-configurations.</p>
-<p>Pressing the <strong>“Run sweep”</strong> button initiates the automated frequency sweep. The
-script configures the ADALM2000 to generate sine‑wave stimuli at each frequency
-step, while the AD4080 captures the ADC response for every point in the sweep.</p>
-<p>During operation, the interface displays three primary plots:</p>
+filter type</strong>.</p>
+<p>Pressing the <strong>Run sweep</strong> button initiates the automated frequency sweep.
+During operation, the interface displays:</p>
 <ol class="arabic simple">
-<li><p><strong>Time‑domain waveform</strong> of the most recent acquisition</p></li>
-<li><p><strong>Frequency‑domain spectrum</strong>, highlighting the primary signal components</p></li>
-<li><p><strong>Filter frequency response</strong>, plotted in decibels</p></li>
+<li><p><strong>Time‑domain waveform</strong></p></li>
+<li><p><strong>Frequency‑domain spectrum</strong></p></li>
+<li><p><strong>Filter frequency response</strong></p></li>
 </ol>
-<p><strong>Expected Output with default Frequencies, Sinc5 Filter, and OSR = 1024</strong></p>
+<p><strong>Expected Output</strong></p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/filtersweep1.png"><img alt="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/filtersweep1.png" src="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/filtersweep1.png" width="900" />
 </a>
 </figure>
-<p><strong>Expected Filter Frequency Response</strong></p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/filtersweep2.png"><img alt="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/filtersweep2.png" src="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/filtersweep2.png" width="850" />
 </a>
 </figure>
-<p>By modifying parameters such as OSR or filter type, you can observe how the ADC
-response changes in real time. For example:</p>
-<ul class="simple">
-<li><p>Increasing <strong>OSR</strong> narrows the effective bandwidth, shifting the cutoff
-frequency lower.</p></li>
-<li><p>Changing <strong>filter types</strong> alters the roll‑off characteristics, steepness, and
-transition‑band behavior.</p></li>
-</ul>
-<p>Together, these real‑time plots provide a clear and intuitive demonstration of
-the AD4080’s digital filtering behavior, enabling users to validate theoretical
-expectations against measured data across a full frequency sweep.</p>
+<p>—</p>
 </section>
 <section id="using-the-ad4080-sink-script">
-<h2>Using the AD4080 Sink Script<a class="headerlink" href="#using-the-ad4080-sink-script" title="Link to this heading"></a></h2>
+<h3>Using the AD4080 Sink Script<a class="headerlink" href="#using-the-ad4080-sink-script" title="Link to this heading"></a></h3>
 <p>To run the <strong>AD4080 sink script</strong>, begin by connecting the <strong>ADALM2000</strong> and the
-<strong>AD4080 evaluation board</strong> to your computer. Ensure that the correct USB and
-serial communication ports are available and selected in the script’s
-configuration dialog. The front‑end sampling frequency of the AD4080 must match
-the rotary switch setting on the evaluation board—this is typically <strong>40 MHz</strong>,
-and the script assumes this value when performing frequency‑domain analysis.</p>
-<p>Once the hardware is powered and connected, run the script using Python. A
-graphical configuration interface will launch automatically, allowing you to
-configure key signal and system parameters, including:</p>
+<strong>AD4080 evaluation board</strong>. Ensure the correct USB and serial communication
+ports are selected.</p>
+<p>Once the script is launched, configure:</p>
 <ul class="simple">
-<li><p><strong>Fundamental frequency</strong> of the generated signal</p></li>
-<li><p><strong>Signal amplitude</strong> specified in dBFS</p></li>
+<li><p><strong>Fundamental frequency</strong></p></li>
+<li><p><strong>Signal amplitude (dBFS)</strong></p></li>
 </ul>
 <p><strong>Tab to change parameters</strong></p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/ad4080_sink1.png"><img alt="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/ad4080_sink1.png" src="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/ad4080_sink1.png" width="450" />
 </a>
 </figure>
-<p>Default harmonic tones and additional noise components are included to generate
-a spectrally rich test signal suitable for frequency‑domain evaluation.</p>
-<p>After configuration, the script programs the ADALM2000 to generate a coherent
-waveform containing the specified fundamental tone, harmonics, and noise
-components. The waveform is transmitted continuously from the M2K, while the
-AD4080 captures a buffer of ADC samples corresponding to the applied stimulus.</p>
-<p>Once data acquisition completes, the script converts raw ADC codes into voltage
-units, normalizes the data to full scale, and performs a Fourier analysis on the
-captured samples. The resulting plots display the time‑domain waveform and the
-frequency‑domain spectrum, highlighting the fundamental tone, harmonics, and
-noise floor.</p>
+<p>After configuration, the ADALM2000 generates a waveform containing a fundamental
+tone, harmonics, and noise. The AD4080 captures ADC samples, which are converted
+to voltage units, normalized to full scale, and analyzed using FFTs.</p>
 <p><strong>Expected Outputs</strong></p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/ad4080_sink2.png"><img alt="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/ad4080_sink2.png" src="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/ad4080_sink2.png" width="900" />
 </a>
 </figure>
-<p>This script demonstrates the use of the AD4080 as a high‑resolution data sink in
-a mixed‑signal measurement setup. By combining controlled signal generation with
-FFT‑based analysis, it enables verification of signal fidelity, scaling
-assumptions, and frequency‑domain behavior in a repeatable and closely
-controlled environment.</p>
+<p>—</p>
 </section>
 <section id="using-the-interactive-sinc-folding-script">
-<h2>Using the Interactive Sinc Folding Script<a class="headerlink" href="#using-the-interactive-sinc-folding-script" title="Link to this heading"></a></h2>
-<p>To run the Sinc Folding Interactive script, begin by connecting the ADALM2000
-(M2K) and the AD4080 evaluation board to your computer. When prompted, select the
-appropriate serial port for the AD4080 and the correct LibIIO URI for the M2K.</p>
-<p>Ensure that the front-end sampling frequency of the AD4080 matches the rotary
-switch setting on the evaluation board. The script assumes a nominal input
-sampling frequency of 40 MHz, which is divided by the selected decimation ratio
-to determine the effective output data rate.</p>
-<p>Once the devices are selected, run the script using Python. An interactive
-graphical interface launches automatically and allows you to adjust parameters
-such as:</p>
+<h3>Using the Interactive Sinc Folding Script<a class="headerlink" href="#using-the-interactive-sinc-folding-script" title="Link to this heading"></a></h3>
+<p>To run the <strong>Interactive Sinc Folding</strong> script, connect the ADALM2000 and AD4080
+evaluation board. Select the appropriate serial port and LibIIO URI.</p>
+<p>The interface allows real‑time adjustment of:</p>
 <ul class="simple">
 <li><p><strong>Decimation ratio (OSR)</strong></p></li>
-<li><p><strong>Digital filter type (sinc1, sinc5, sinc5 + PF)</strong></p></li>
+<li><p><strong>Digital filter type</strong></p></li>
 <li><p><strong>Noise bandwidth</strong></p></li>
 <li><p><strong>Noise spectral density</strong></p></li>
 </ul>
-<p>During operation, the script programs the ADALM2000 to generate a band-limited
-noise signal centered at a selectable frequency. The noise amplitude is
-automatically constrained to remain within the M2K output voltage limits. The
-AD4080 captures the resulting ADC output while applying the selected digital
-filter and decimation configuration.</p>
-<p><strong>Expected Outputs</strong></p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/sinc_inter.png"><img alt="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/sinc_inter.png" src="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/sinc_inter.png" width="900" />
 </a>
 </figure>
-<p>As parameters are adjusted, the displayed frequency-domain data updates in real
-time, clearly showing how noise folds into the baseband and how the sinc filter
-shapes the spectrum. This interactive behavior makes the impact of digital
-filtering and decimation immediately visible and intuitive.</p>
+<p>The frequency‑domain display updates in real time, showing how noise folds into
+the baseband and how digital filtering shapes the spectrum.</p>
+<p>—</p>
 </section>
 <section id="using-the-noise-sweep-script">
-<h2>Using the Noise Sweep Script<a class="headerlink" href="#using-the-noise-sweep-script" title="Link to this heading"></a></h2>
-<p>To run the noise bandwidth sweep script, begin by connecting the ADALM2000 (M2K)
-and the AD4080 evaluation board to your computer. When prompted, select the
-appropriate serial port for the AD4080 and the correct LibIIO URI for the M2K.</p>
-<p>Ensure that the front-end sampling frequency of the AD4080 matches the rotary
-switch setting on the evaluation board. The script assumes a fixed input
-sampling frequency of 40 MHz when calculating filter notch locations, frequency
-axes, and noise bandwidth.</p>
-<p>Once the devices are selected, run the script using Python. A control window
-appears that allows you to select the desired digital filter type and enter the
-oversampling ratio (OSR). Pressing the <strong>Start sweep</strong> button initiates the
-measurement.</p>
-<p>During operation, the script configures the ADALM2000 to generate band-limited
-noise whose bandwidth increases incrementally from DC. At each step, the AD4080
-captures a block of ADC samples while applying the selected digital filter and
-decimation settings. DC offset is removed from the captured data, and the RMS
-noise is computed using the standard deviation of the signal.</p>
-<p><strong>Expected Outputs</strong></p>
+<h3>Using the Noise Sweep Script<a class="headerlink" href="#using-the-noise-sweep-script" title="Link to this heading"></a></h3>
+<p>To run the <strong>noise bandwidth sweep script</strong>, connect the ADALM2000 and AD4080 and
+verify the front-end sampling frequency.</p>
+<p>Select the digital filter and OSR, then press <strong>Start sweep</strong>. The script
+increments noise bandwidth from DC, captures ADC samples, removes DC offset, and
+computes RMS noise using the standard deviation.</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/noisesweep.png"><img alt="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/noisesweep.png" src="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/noisesweep.png" width="900" />
 </a>
 </figure>
-<p>The script generates multiple plots, including time-domain ADC data and its
-corresponding frequency spectrum at the final sweep point, total integrated
-noise as a function of noise bandwidth, and incremental noise spectral density.
-Measured results are overlaid with analytical reference curves based on ideal
-rectangular noise and sinc-filter responses, allowing direct comparison between
-theoretical expectations and measured behavior.</p>
+<p>Measured results are overlaid with analytical reference curves derived from ideal
+sinc‑filter responses.</p>
 </section>
-<section id="practical-notes">
-<h2>Practical Notes<a class="headerlink" href="#practical-notes" title="Link to this heading"></a></h2>
-<p>Frequency sweep analysis provides a convenient method for validating ADC
-performance and clock behavior over a range of input frequencies. Unlike
-single-frequency measurements, sweep-based FFT analysis reveals trends,
-bandwidth limitations, and frequency-dependent behavior while still avoiding
-the need for precise time-domain alignment.</p>
+</section>
+<section id="developer-overview">
+<h2>Developer Overview<a class="headerlink" href="#developer-overview" title="Link to this heading"></a></h2>
+<section id="fft-fundamentals">
+<h3>FFT Fundamentals<a class="headerlink" href="#fft-fundamentals" title="Link to this heading"></a></h3>
+<p>The <strong>Fast Fourier Transform (FFT)</strong> converts time‑domain samples into a
+frequency‑domain representation, revealing sinusoidal components, harmonics,
+and noise.</p>
+<p>The frequency resolution is:</p>
+<p><span class="math notranslate nohighlight">\(\Delta f = \frac{f_s}{N}\)</span></p>
+<p>The frequency represented by bin <span class="math notranslate nohighlight">\(k\)</span> is:</p>
+<p><span class="math notranslate nohighlight">\(f_k = \frac{k}{N} \cdot f_s\)</span></p>
+<p>If the input frequency is known, the sampling frequency can be estimated as:</p>
+<p><span class="math notranslate nohighlight">\(f_s = \frac{f_{in} \cdot N}{k}\)</span></p>
+<p>—</p>
+</section>
+<section id="sinc-folding-concepts">
+<h3>Sinc Folding Concepts<a class="headerlink" href="#sinc-folding-concepts" title="Link to this heading"></a></h3>
+<p>Oversampling ADCs use sinc‑based digital decimation filters with repeating lobes
+and nulls. As the output rate is reduced, energy outside the baseband folds back
+according to the sinc filter response, producing predictable spectral shaping.</p>
+<p>Higher‑order sinc filters provide stronger attenuation but introduce more
+pronounced shaping. Increasing OSR reduces bandwidth and increases noise
+suppression while moving folding points closer together.</p>
+<p>—</p>
+</section>
+<section id="integrated-noise-in-oversampled-adcs">
+<h3>Integrated Noise in Oversampled ADCs<a class="headerlink" href="#integrated-noise-in-oversampled-adcs" title="Link to this heading"></a></h3>
+<p>Wideband noise is spectrally shaped by sinc filters before integration.
+The observed RMS noise depends on the magnitude‑squared filter response and the
+effective noise bandwidth.</p>
+<p>Examining integrated noise behavior reveals how oversampling, filter selection,
+and decimation affect noise performance.</p>
+</section>
+</section>
+<section id="developer-guide">
+<h2>Developer Guide<a class="headerlink" href="#developer-guide" title="Link to this heading"></a></h2>
+<p>The scripts implement FFT‑based spectral analysis, frequency sweeping, and noise
+integration using consistent assumptions about sampling frequency, decimation,
+and normalization.</p>
+<ul class="simple">
+<li><p>DC offsets are removed before noise calculation</p></li>
+<li><p>RMS noise is computed using standard deviation</p></li>
+<li><p>Analytical reference curves assume ideal rectangular noise shaped by sinc
+filter responses</p></li>
+</ul>
+<p>This approach allows direct comparison between theoretical expectations and
+measured ADC behavior.</p>
+</section>
+<section id="help-and-support">
+<h2>Help and Support<a class="headerlink" href="#help-and-support" title="Link to this heading"></a></h2>
+<p>For support related to hardware setup, script execution, or data interpretation:</p>
+<ul class="simple">
+<li><p>Review the script repository documentation</p></li>
+<li><p>Consult the AD4080, ADALM2000, and MMSC user manuals</p></li>
+<li><p>Contact your Analog Devices applications support representative</p></li>
+</ul>
 </section>
 </section>
 
