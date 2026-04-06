@@ -4,18 +4,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="The Apollo plugin comes bundled with the ACE software and can be downloaded from here." name="description" />
+<meta content="This is a work in progress. Raya is working on this docu!" name="description" />
 
-    <title>AD9084 (Apollo) Profile Generator &#8212; System Level Documentation  documentation</title>
+    <title>Signal Processing Concepts with ADALM-MMSC &#8212; System Level Documentation  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" />
     <link rel="stylesheet" type="text/css" href="../../_static/app.min.css?v=833c9372" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=5f9cb17c" />
     <script async="async" src="../../_static/app.umd.js?v=f78f54ff"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="icon" href="../../_static/icon.svg"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Analog Attach" href="../analog-attach/index.html" />
-    <link rel="prev" title="Kuiper" href="../../linux/kuiper/index.html" />
+    <link rel="next" title="What software do I need for my SDR?" href="../workshop_what_sw_for_sdr/index.html" />
+    <link rel="prev" title="Tools for High-Speed Mixed Signal System Design" href="../tools_for_hs/index.html" />
    
   
   
@@ -95,17 +96,17 @@
         </div>
         <nav>
           <ul>
-<li><a class="reference internal" href="#">AD9084 (Apollo) Profile Generator</a><ul>
-<li><a class="reference internal" href="#apollo-profile-generator">Apollo Profile Generator</a></li>
-<li><a class="reference internal" href="#using-the-generated-profile">Using the generated profile</a><ul>
-<li><a class="reference internal" href="#update-the-defconfig-to-include-the-generated-profile">Update the defconfig to include the generated profile</a><ul>
-<li><a class="reference internal" href="#for-virtex-ultrascale-carriers-vcu118-vcu128">For Virtex UltraScale+ carriers (VCU118/VCU128)</a></li>
-<li><a class="reference internal" href="#for-versal-carriers-vck190-vpk180">For Versal carriers (VCK190/VPK180)</a></li>
-<li><a class="reference internal" href="#for-intel-agilex-7-i-series-fm87">For Intel Agilex 7 I-Series (FM87)</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li><a class="reference internal" href="#">Signal Processing Concepts with ADALM-MMSC</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#fft-fundamentals">FFT Fundamentals</a></li>
+<li><a class="reference internal" href="#sinc-folding-concepts">Sinc Folding Concepts</a></li>
+<li><a class="reference internal" href="#integrated-noise-in-oversampled-adcs">Integrated Noise in Oversampled ADCs</a></li>
+<li><a class="reference internal" href="#using-the-detect-sample-frequency-script">Using the Detect Sample Frequency Script</a></li>
+<li><a class="reference internal" href="#using-the-frequency-sweep-script">Using the Frequency Sweep Script</a></li>
+<li><a class="reference internal" href="#using-the-ad4080-sink-script">Using the AD4080 Sink Script</a></li>
+<li><a class="reference internal" href="#using-the-interactive-sinc-folding-script">Using the Interactive Sinc Folding Script</a></li>
+<li><a class="reference internal" href="#using-the-noise-sweep-script">Using the Noise Sweep Script</a></li>
+<li><a class="reference internal" href="#practical-notes">Practical Notes</a></li>
 </ul>
 </li>
 </ul>
@@ -182,43 +183,43 @@ Content on this topic
   <span class="caption-text">Software</span>
 </p>
 
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">AD9084 (Apollo) Profile Generator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../analog-attach/index.html">Analog Attach</a></li>
-<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-4" id="toctree-collapse-4"/><div class="collapse"><a class="reference internal" href="../iio-oscilloscope/index.html">IIO Oscilloscope</a><label for="toctree-collapse-4"><div class="icon"></div></label></div><ul>
-<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-4-1" id="toctree-collapse-4-1"/><div class="collapse"><a class="reference internal" href="../iio-oscilloscope/adrv9009/index.html">ADRV9009</a><label for="toctree-collapse-4-1"><div class="icon"></div></label></div><ul>
-<li class="toctree-l3"><a class="reference internal" href="../iio-oscilloscope/adrv9009/plugin.html">Standard Plugin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../iio-oscilloscope/adrv9009/advanced-plugin.html">Advanced plugin</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../software/ad9084-profile-generator/index.html">AD9084 (Apollo) Profile Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software/analog-attach/index.html">Analog Attach</a></li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-4" id="toctree-collapse-4"/><div class="collapse"><a class="reference internal" href="../../software/iio-oscilloscope/index.html">IIO Oscilloscope</a><label for="toctree-collapse-4"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-4-1" id="toctree-collapse-4-1"/><div class="collapse"><a class="reference internal" href="../../software/iio-oscilloscope/adrv9009/index.html">ADRV9009</a><label for="toctree-collapse-4-1"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../software/iio-oscilloscope/adrv9009/plugin.html">Standard Plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../software/iio-oscilloscope/adrv9009/advanced-plugin.html">Advanced plugin</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../iio-oscilloscope/ad9084/index.html">AD9084</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software/iio-oscilloscope/ad9084/index.html">AD9084</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-5" id="toctree-collapse-5"/><div class="collapse"><a class="reference internal" href="../libiio/index.html">Libiio</a><label for="toctree-collapse-5"><div class="icon"></div></label></div><ul>
-<li class="toctree-l2"><a class="reference internal" href="../libiio/internals.html">About libiio</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../libiio/cli.html">Command line utility</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../libiio/tips-tricks.html">Tips &amp; Tricks</a></li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-5" id="toctree-collapse-5"/><div class="collapse"><a class="reference internal" href="../../software/libiio/index.html">Libiio</a><label for="toctree-collapse-5"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../software/libiio/internals.html">About libiio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software/libiio/cli.html">Command line utility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software/libiio/tips-tricks.html">Tips &amp; Tricks</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-6" id="toctree-collapse-6"/><div class="collapse"><a class="reference internal" href="../libm2k/index.html">Libm2k</a><label for="toctree-collapse-6"><div class="icon"></div></label></div><ul>
-<li class="toctree-l2"><a class="reference internal" href="../libm2k/calibration.html">Calibration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../libm2k/digital_communication.html">Digital communication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../libm2k/m2kcli.html">Command line utility</a></li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-6" id="toctree-collapse-6"/><div class="collapse"><a class="reference internal" href="../../software/libm2k/index.html">Libm2k</a><label for="toctree-collapse-6"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../software/libm2k/calibration.html">Calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software/libm2k/digital_communication.html">Digital communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software/libm2k/m2kcli.html">Command line utility</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-7" id="toctree-collapse-7"/><div class="collapse"><a class="reference internal" href="../matlab/index.html">MATLAB &amp; Simulink Toolboxes</a><label for="toctree-collapse-7"><div class="icon"></div></label></div><ul>
-<li class="toctree-l2"><a class="reference internal" href="../matlab/hsx-toolbox/index.html">High Speed Converter Toolbox</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../matlab/pcx-toolbox/index.html">Precision Toolbox</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../matlab/rf-microwave-toolbox/index.html">RF Microwave Toolbox</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../matlab/transceiver-toolbox/index.html">Transceiver Toolbox</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../matlab/bsp-extend.html">Extending Device Interfaces</a></li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-7" id="toctree-collapse-7"/><div class="collapse"><a class="reference internal" href="../../software/matlab/index.html">MATLAB &amp; Simulink Toolboxes</a><label for="toctree-collapse-7"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../software/matlab/hsx-toolbox/index.html">High Speed Converter Toolbox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software/matlab/pcx-toolbox/index.html">Precision Toolbox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software/matlab/rf-microwave-toolbox/index.html">RF Microwave Toolbox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software/matlab/transceiver-toolbox/index.html">Transceiver Toolbox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software/matlab/bsp-extend.html">Extending Device Interfaces</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../pyadi-iio/index.html">PyADI-IIO</a></li>
-<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-8" id="toctree-collapse-8"/><div class="collapse"><a class="reference internal" href="../zephyr/index.html">Zephyr RTOS</a><label for="toctree-collapse-8"><div class="icon"></div></label></div><ul>
-<li class="toctree-l2"><a class="reference internal" href="../zephyr/zephyr-devicetree.html">Intro to Devicetree</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../zephyr/kconfig/zephyr-kconfig.html">Introduction to Kconfig</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../zephyr/using-zephyr-codefusion-fs/zephyr_codefusion_fs.html">Using Zephyr &amp; Codefusion Studio to Partition a Flash Filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software/pyadi-iio/index.html">PyADI-IIO</a></li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-8" id="toctree-collapse-8"/><div class="collapse"><a class="reference internal" href="../../software/zephyr/index.html">Zephyr RTOS</a><label for="toctree-collapse-8"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../software/zephyr/zephyr-devicetree.html">Intro to Devicetree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software/zephyr/kconfig/zephyr-kconfig.html">Introduction to Kconfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software/zephyr/using-zephyr-codefusion-fs/zephyr_codefusion_fs.html">Using Zephyr &amp; Codefusion Studio to Partition a Flash Filesystem</a></li>
 </ul>
 </li>
 </ul>
@@ -752,27 +753,27 @@ Content on this topic
   <span class="caption-text">Learning</span>
 </p>
 
-<ul>
-<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-16" id="toctree-collapse-16"/><div class="collapse"><a class="reference internal" href="../../learning/index.html">Learning! Tutorials, Workshops, Etc</a><label for="toctree-collapse-16"><div class="icon"></div></label></div><ul>
-<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-16-1" id="toctree-collapse-16-1"/><div class="collapse"><a class="reference internal" href="../../learning/demo_hp_analog_meets_ai/index.html">DEMO High-Performance Analog Meets AI</a><label for="toctree-collapse-16-1"><div class="icon"></div></label></div><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../learning/demo_hp_analog_meets_ai/software/index.html">Software Configuration and Setup</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-16" id="toctree-collapse-16" checked=""/><div class="collapse"><a class="reference internal" href="../index.html">Learning! Tutorials, Workshops, Etc</a><label for="toctree-collapse-16"><div class="icon"></div></label></div><ul class="current">
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-16-1" id="toctree-collapse-16-1"/><div class="collapse"><a class="reference internal" href="../demo_hp_analog_meets_ai/index.html">DEMO High-Performance Analog Meets AI</a><label for="toctree-collapse-16-1"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="../demo_hp_analog_meets_ai/software/index.html">Software Configuration and Setup</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../learning/tutorial_prec_adc/index.html">Precision ADC Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../learning/converter_connectivity_tutorial/index.html">Converter Connectivity Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../learning/sw_infrastructure/index.html">Software Infrastructure for designing with ADCs, DACs, and Sensors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../learning/tools_for_ls/index.html">Tools for Low Speed Mixed Signal System Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../learning/tools_for_prec_wb/index.html">Tools for Precision Wideband Mixed Signal System Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../learning/tools_for_hs/index.html">Tools for High-Speed Mixed Signal System Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../learning/sp_concepts_with_mmsc/index.html">Signal Processing Concepts with ADALM-MMSC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../learning/workshop_what_sw_for_sdr/index.html">What software do I need for my SDR?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../learning/workshop_a_precision_converter_fpga_integration_journey/index.html">A Precision Converter FPGA Integration Journey</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../learning/workshop_kuiper/index.html">Customizing ADI Kuiper Linux</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../learning/workshops_software_defined_instrumentation/index.html">Software Defined Instrumentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../learning/workshops_introduction_to_electronics/index.html">Introduction to Electronics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../learning/workshops_embedded_baremetal/index.html">Embedded Baremetal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../learning/workshops_embedded_linux/index.html">Embedded Linux</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../learning/workshops_applied_systems_control/index.html">Applied Systems Control Workshop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial_prec_adc/index.html">Precision ADC Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../converter_connectivity_tutorial/index.html">Converter Connectivity Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sw_infrastructure/index.html">Software Infrastructure for designing with ADCs, DACs, and Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools_for_ls/index.html">Tools for Low Speed Mixed Signal System Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools_for_prec_wb/index.html">Tools for Precision Wideband Mixed Signal System Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools_for_hs/index.html">Tools for High-Speed Mixed Signal System Design</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Signal Processing Concepts with ADALM-MMSC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workshop_what_sw_for_sdr/index.html">What software do I need for my SDR?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workshop_a_precision_converter_fpga_integration_journey/index.html">A Precision Converter FPGA Integration Journey</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workshop_kuiper/index.html">Customizing ADI Kuiper Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workshops_software_defined_instrumentation/index.html">Software Defined Instrumentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workshops_introduction_to_electronics/index.html">Introduction to Electronics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workshops_embedded_baremetal/index.html">Embedded Baremetal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workshops_embedded_linux/index.html">Embedded Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workshops_applied_systems_control/index.html">Applied Systems Control Workshop</a></li>
 </ul>
 </li>
 </ul>
@@ -799,166 +800,293 @@ Content on this topic
       <div class="documentwrapper">
         <div class="bodywrapper" id="top-anchor">
           <div class="body-header">
-  <nav class="breadcrumb empty"><ol></ol></nav>
+  <nav class="breadcrumb"><ol><li><a href="../index.html">Learning! Tutorials, Workshops, Etc</a></li></ol></nav>
 </div>
           <div class="body" role="main">
             
-  <section id="ad9084-apollo-profile-generator">
-<span id="ad9084-profile-generator"></span><h1>AD9084 (Apollo) Profile Generator<a class="headerlink" href="#ad9084-apollo-profile-generator" title="Link to this heading"></a></h1>
-<p>The Apollo plugin comes bundled with the ACE software and can be downloaded
-from <a class="icon adi reference external" href="https://www.analog.com/en/resources/evaluation-hardware-and-software/evaluation-development-platforms/ace-software.html" target="_blank">here</a>.</p>
-<img alt="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/software/ad9084-profile-generator/apollo_plugin_main_window.png" src="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/software/ad9084-profile-generator/apollo_plugin_main_window.png" />
-<section id="apollo-profile-generator">
-<h2>Apollo Profile Generator<a class="headerlink" href="#apollo-profile-generator" title="Link to this heading"></a></h2>
-<p>The Apollo profile generator is a tool that allows you to create profiles
-with different configurations for the AD9084 device. The profiles are then
-programmed into the device to configure it to work in a specific way.</p>
-<img alt="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/software/ad9084-profile-generator/apollo_profile_generator.png" src="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/software/ad9084-profile-generator/apollo_profile_generator.png" />
-<p>The profile generator allows you to configure various parameters of the AD9084:</p>
-<ul class="simple">
-<li><p>The JESD parameters</p></li>
-<li><p>ADC / DAC clock frequencies</p></li>
-<li><p>Interpolation / Decimation factors</p></li>
-</ul>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>The JESD parameters configured in the profile have to match the ones used to build
-the AD9084 HDL design.</p>
-</div>
+  <section id="signal-processing-concepts-with-adalm-mmsc">
+<h1>Signal Processing Concepts with ADALM-MMSC<a class="headerlink" href="#signal-processing-concepts-with-adalm-mmsc" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>By pressing the <code class="docutils literal notranslate"><span class="pre">Save</span></code> button, the profile generator will generate 3 files inside the
-<code class="docutils literal notranslate"><span class="pre">User</span> <span class="pre">Library</span></code> folder:</p>
+<p>This is a work in progress. Raya is working on this docu!</p>
+</div>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Compressed Introduction Here. All scripts that will be used in this tutorial are
+available in my Repository:</p>
+</section>
+<section id="fft-fundamentals">
+<h2>FFT Fundamentals<a class="headerlink" href="#fft-fundamentals" title="Link to this heading"></a></h2>
+<p>The <strong>Fast Fourier Transform (FFT)</strong> is a numerical method that converts a
+sequence of time‑domain samples into their corresponding <strong>frequency‑domain</strong>
+representation. Instead of viewing how a signal changes over time, the FFT
+reveals which sinusoidal components are present and how strong they are. This
+makes it a central tool for analyzing ADC behavior, harmonic content, and noise
+performance in mixed‑signal systems.</p>
+<p>When capturing data from the <strong>AD4080 evaluation board</strong>, the FFT enables
+identification of the dominant input tone, harmonics, and broadband noise
+components. It also provides an indirect but accurate way to observe how the
+ADC’s sampling frequency affects the spacing of frequency bins and the placement
+of spectral peaks.</p>
+<p>An FFT produces a fixed number of equally spaced frequency bins. The spacing
+between bins—referred to as the <strong>frequency resolution</strong>—is determined by the
+sampling rate and the FFT length:</p>
+<p><span class="math notranslate nohighlight">\(f = \frac{f_s}{N}\)</span></p>
+<p>Where:
+- <span class="math notranslate nohighlight">\(f_s\)</span> is the sampling frequency
+- <span class="math notranslate nohighlight">\(N\)</span> is the number of samples in the FFT</p>
+<p>The frequency represented by bin <span class="math notranslate nohighlight">\(k\)</span> is:</p>
+<p><span class="math notranslate nohighlight">\(f_k = \frac{k}{N} \cdot f_s\)</span></p>
+<p>The bin with the highest magnitude corresponds to the strongest sinusoidal
+component in the signal. If the input frequency is known, its location within
+the FFT can be used to estimate the sampling frequency:</p>
+<p><span class="math notranslate nohighlight">\(f_s = \frac{f_{in} \cdot N}{k}\)</span></p>
+<p>These relationships form the basis for all frequency‑domain tools used in this
+tutorial, including sampling‑frequency detection, frequency sweeping, and the
+AD4080 sink script’s Fourier analysis.</p>
+</section>
+<section id="sinc-folding-concepts">
+<h2>Sinc Folding Concepts<a class="headerlink" href="#sinc-folding-concepts" title="Link to this heading"></a></h2>
+<p>Oversampling ADCs such as the AD4080 use digital decimation filters to reduce
+output data rate while suppressing out-of-band noise. These filters are commonly
+implemented as sinc (sin(x)/x) filters, which exhibit a repeating frequency
+response made up of lobes and nulls.</p>
+<p>As the ADC output sample rate is reduced through decimation, signal and noise
+energy outside the baseband folds back into the Nyquist band in a predictable
+way defined by the sinc filter response. This effect is known as <em>sinc folding</em>.
+The shape and severity of the folding depend on both the filter type (sinc1,
+sinc5, sinc5 + PF) and the oversampling ratio (OSR).</p>
+<p>Higher-order sinc filters provide stronger attenuation near DC but introduce
+more pronounced spectral shaping. Increasing OSR reduces the effective signal
+bandwidth and increases noise suppression, but also moves the folding points
+closer together in frequency. Visualizing these effects helps build intuition
+for how digital filtering influences noise, bandwidth, and aliasing behavior in
+high-resolution ADC systems.</p>
+<p>This script demonstrates sinc folding interactively by injecting controlled,
+band-limited noise into the AD4080 and observing how the spectrum is shaped by
+different digital filter and decimation settings.</p>
+</section>
+<section id="integrated-noise-in-oversampled-adcs">
+<h2>Integrated Noise in Oversampled ADCs<a class="headerlink" href="#integrated-noise-in-oversampled-adcs" title="Link to this heading"></a></h2>
+<p>Oversampling analog‑to‑digital converters (ADCs) reduce in‑band noise by sampling
+the input signal at a rate much higher than the Nyquist frequency and then
+applying digital decimation filters to lower the output data rate. This digital
+filtering stage suppresses out‑of‑band content while shaping the spectrum of the
+remaining noise.</p>
+<p>In many precision ADCs, decimation filters are implemented as sinc filters, whose
+frequency responses feature regularly spaced nulls and passband droop that
+depends on filter order. As a result, wideband (white) noise is not passed
+uniformly through the converter; instead, its contribution to the output noise
+is weighted by the magnitude‑squared sinc response.</p>
+<p>The total RMS noise observed at the ADC output therefore depends on the
+integration of noise power across frequency, as shaped by the selected sinc
+filter and oversampling ratio. By examining how integrated noise and noise
+spectral density vary with bandwidth, filter order, and decimation, it is
+possible to gain insight into noise shaping, folding behavior, and effective
+signal bandwidth in oversampled data converters.</p>
+</section>
+<section id="using-the-detect-sample-frequency-script">
+<h2>Using the Detect Sample Frequency Script<a class="headerlink" href="#using-the-detect-sample-frequency-script" title="Link to this heading"></a></h2>
+<p>To run the <strong>sampling frequency detection (Fs Detect) script</strong>, begin by
+powering up both the <strong>ADALM2000</strong> and the <strong>MMSC board</strong> equipped with the
+<strong>MAX32666FTHR microcontroller</strong>.</p>
+<p>Connect the <strong>W1</strong> output from the ADALM2000 to the <strong>negative input (IN–)</strong> on
+connector <strong>P17</strong> of the MMSC board. Ensure that all ground connections are
+correctly made. Configure the appropriate COM port on the host computer
+to establish communication.</p>
+<p>Next, run the Fs Detect script using Python. Open <strong>Scopy</strong>, navigate to the
+<em>Signal Generator</em>, and configure a sine-wave output. The default input
+frequency is typically <strong>100 kHz</strong>, but this value may be adjusted as needed.
+Start the signal generator to apply the sine-wave input to the ADC.</p>
+<p><strong>Scopy Sample Setup</strong></p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/scopy_detect.png"><img alt="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/scopy_detect.png" src="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/scopy_detect.png" width="900" />
+</a>
+</figure>
+<p>In the script’s graphical interface, enter the input frequency into the provided
+text box. Data acquisition is controlled using the following buttons:</p>
 <ul class="simple">
-<li><p>A <code class="docutils literal notranslate"><span class="pre">.json</span></code> file containing all the profile settings</p></li>
-<li><p>A <code class="docutils literal notranslate"><span class="pre">_summary.json</span></code> file containing a brief summary of the profile settings</p></li>
-<li><p>A <code class="docutils literal notranslate"><span class="pre">.bin</span></code> file containing the profile settings in binary format which will be
-loaded on the AD9084</p></li>
+<li><p><strong>Run</strong> → Begins continuous accumulation of ADC samples</p></li>
+<li><p><strong>Stop</strong> → Halts acquisition</p></li>
+<li><p><strong>Single Shot</strong> → Captures one buffer of data and stops</p></li>
 </ul>
-</div>
+<p>The script identifies the FFT bin containing the dominant spectral peak and
+calculates the ADC sampling frequency from its location. The calculated value is
+compared to the expected sampling frequency reported by the hardware, and the
+error percentage is displayed.</p>
+<p><strong>Expected Output</strong></p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/frequency_det.png"><img alt="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/frequency_det.png" src="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/frequency_det.png" width="900" />
+</a>
+</figure>
+<p>Adjusting the physical clock on the AD4080 board causes the ADC sampling
+frequency to change. This shift is reflected in the FFT output and calculated
+sampling frequency in real time, validating clock control through frequency-
+domain analysis.</p>
 </section>
-<section id="using-the-generated-profile">
-<h2>Using the generated profile<a class="headerlink" href="#using-the-generated-profile" title="Link to this heading"></a></h2>
-<p>The <a class="icon adi reference external" href="https://www.analog.com/AD9084" target="_blank">AD9084</a> driver will look for the profile in the default location
-<code class="docutils literal notranslate"><span class="pre">linux/lib/firmware/</span></code> in order to program it to the board.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>The driver reads the <code class="docutils literal notranslate"><span class="pre">adi,device-profile-fw-name</span></code> property from the device tree
-and will search for the corresponding <code class="docutils literal notranslate"><span class="pre">.bin</span></code> file.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The following commands assume that the profile has been generated and saved
-with the <code class="docutils literal notranslate"><span class="pre">new_profile.bin</span></code> name.</p>
-</div>
-<p>After generating the profile, copy the <code class="docutils literal notranslate"><span class="pre">.bin</span></code> file to the <code class="docutils literal notranslate"><span class="pre">linux/lib/firmware</span></code> location:</p>
-<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>user@analog:~$
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>&lt;path_to_profile&gt;/new_profile.bin<span class="w"> </span>linux/lib/firmware/
-</pre></div>
-</div>
-<div class="clear-left"></div></div></div><section id="update-the-defconfig-to-include-the-generated-profile">
-<h3>Update the defconfig to include the generated profile<a class="headerlink" href="#update-the-defconfig-to-include-the-generated-profile" title="Link to this heading"></a></h3>
-<section id="for-virtex-ultrascale-carriers-vcu118-vcu128">
-<h4>For Virtex UltraScale+ carriers (<a class="icon link reference external" href="https://www.xilinx.com/VCU118" target="_blank">VCU118</a>/<a class="icon link reference external" href="https://www.xilinx.com/VCU128" target="_blank">VCU128</a>)<a class="headerlink" href="#for-virtex-ultrascale-carriers-vcu118-vcu128" title="Link to this heading"></a></h4>
-<p>Update the <code class="docutils literal notranslate"><span class="pre">arch/microblaze/configs/adi_mb_defconfig</span></code> file to include
-the generated <code class="docutils literal notranslate"><span class="pre">.bin</span></code> under the <code class="docutils literal notranslate"><span class="pre">CONFIG_EXTRA_FIRMWARE</span></code> option:</p>
-<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>user@analog:~$
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>linux
-</pre></div>
-</div>
-<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>user@analog:~/linux$
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/^CONFIG_EXTRA_FIRMWARE=&quot;/&amp;new_profile.bin /&#39;</span><span class="w"> </span>arch/arch/microblaze/configs/adi_mb_defconfig
-</pre></div>
-</div>
-<div class="clear-left"></div></div><div><div class="no-select highlight-text notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>user@analog:~/linux$
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>arch/arch/microblaze/configs/adi_mb_defconfig<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">&#39;CONFIG_EXTRA_FIRMWARE=&#39;</span>
-</pre></div>
-</div>
-<div class="clear-left"></div></div><div><div class="no-select highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG_EXTRA_FIRMWARE=&quot;new_profile.bin APOLLO_FW_CPU1_B.bin &lt;...&gt;&quot;
-</pre></div>
-</div>
-<div class="clear-left"></div></div></div><p>You can then follow the <a class="reference internal" href="../../solutions/reference-designs/ad9084_ebz/quickstart/microblaze.html#ad9084-ebz-microblaze-linux"><span class="std std-ref">Linux kernel build flow</span></a>
-to build the kernel and boot it on the board.</p>
+<section id="using-the-frequency-sweep-script">
+<h2>Using the Frequency Sweep Script<a class="headerlink" href="#using-the-frequency-sweep-script" title="Link to this heading"></a></h2>
+<p>To run the <strong>frequency sweep script</strong>, begin by connecting the <strong>ADALM2000</strong> and
+the <strong>AD4080 evaluation board</strong> to your computer. Ensure that the correct USB
+interfaces and serial communication ports are specified in the script arguments.
+The front‑end sampling frequency must match the rotary switch setting on the
+AD4080 board—this is typically <strong>40 MHz</strong>, and the script expects this value to
+be set correctly before acquisition begins.</p>
+<p>Once the hardware is powered and connected, run the script using Python. The
+graphical interface will launch automatically, providing user‑configurable input
+fields for sweep parameters including:</p>
+<ul class="simple">
+<li><p><strong>Start frequency</strong></p></li>
+<li><p><strong>Stop frequency</strong></p></li>
+<li><p><strong>Step size</strong></p></li>
+<li><p><strong>OSR (Oversampling Ratio)</strong></p></li>
+</ul>
+<p>Additionally, the interface offers radio buttons to select the desired <strong>digital
+filter type</strong>, allowing you to compare responses across different filtering
+configurations.</p>
+<p>Pressing the <strong>“Run sweep”</strong> button initiates the automated frequency sweep. The
+script configures the ADALM2000 to generate sine‑wave stimuli at each frequency
+step, while the AD4080 captures the ADC response for every point in the sweep.</p>
+<p>During operation, the interface displays three primary plots:</p>
+<ol class="arabic simple">
+<li><p><strong>Time‑domain waveform</strong> of the most recent acquisition</p></li>
+<li><p><strong>Frequency‑domain spectrum</strong>, highlighting the primary signal components</p></li>
+<li><p><strong>Filter frequency response</strong>, plotted in decibels</p></li>
+</ol>
+<p><strong>Expected Output with default Frequencies, Sinc5 Filter, and OSR = 1024</strong></p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/filtersweep1.png"><img alt="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/filtersweep1.png" src="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/filtersweep1.png" width="900" />
+</a>
+</figure>
+<p><strong>Expected Filter Frequency Response</strong></p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/filtersweep2.png"><img alt="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/filtersweep2.png" src="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/filtersweep2.png" width="850" />
+</a>
+</figure>
+<p>By modifying parameters such as OSR or filter type, you can observe how the ADC
+response changes in real time. For example:</p>
+<ul class="simple">
+<li><p>Increasing <strong>OSR</strong> narrows the effective bandwidth, shifting the cutoff
+frequency lower.</p></li>
+<li><p>Changing <strong>filter types</strong> alters the roll‑off characteristics, steepness, and
+transition‑band behavior.</p></li>
+</ul>
+<p>Together, these real‑time plots provide a clear and intuitive demonstration of
+the AD4080’s digital filtering behavior, enabling users to validate theoretical
+expectations against measured data across a full frequency sweep.</p>
 </section>
-<section id="for-versal-carriers-vck190-vpk180">
-<h4>For Versal carriers (<a class="icon link reference external" href="https://www.xilinx.com/VCK190" target="_blank">VCK190</a>/<a class="icon link reference external" href="https://www.xilinx.com/VPK180" target="_blank">VPK180</a>)<a class="headerlink" href="#for-versal-carriers-vck190-vpk180" title="Link to this heading"></a></h4>
-<p>Update the <code class="docutils literal notranslate"><span class="pre">arch/arm64/configs/adi_versal_defconfig</span></code> file to include
-the generated <code class="docutils literal notranslate"><span class="pre">.bin</span></code> under the <code class="docutils literal notranslate"><span class="pre">CONFIG_EXTRA_FIRMWARE</span></code> option:</p>
-<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>user@analog:~$
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>linux
-</pre></div>
-</div>
-<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>user@analog:~/linux$
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/^CONFIG_EXTRA_FIRMWARE=&quot;/&amp;new_profile.bin /&#39;</span><span class="w"> </span>arch/arm64/configs/adi_versal_defconfig
-</pre></div>
-</div>
-<div class="clear-left"></div></div><div><div class="no-select highlight-text notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>user@analog:~/linux$
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>arch/arm64/configs/adi_versal_defconfig<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">&#39;CONFIG_EXTRA_FIRMWARE=&#39;</span>
-</pre></div>
-</div>
-<div class="clear-left"></div></div><div><div class="no-select highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG_EXTRA_FIRMWARE=&quot;new_profile.bin APOLLO_FW_CPU1_B.bin &lt;...&gt;&quot;
-</pre></div>
-</div>
-<div class="clear-left"></div></div></div><p>You can then follow the <a class="reference internal" href="../../solutions/reference-designs/ad9084_ebz/quickstart/versal.html#ad9084-versal-linux"><span class="std std-ref">Linux kernel build flow</span></a>
-to build the kernel and boot it on the board.</p>
+<section id="using-the-ad4080-sink-script">
+<h2>Using the AD4080 Sink Script<a class="headerlink" href="#using-the-ad4080-sink-script" title="Link to this heading"></a></h2>
+<p>To run the <strong>AD4080 sink script</strong>, begin by connecting the <strong>ADALM2000</strong> and the
+<strong>AD4080 evaluation board</strong> to your computer. Ensure that the correct USB and
+serial communication ports are available and selected in the script’s
+configuration dialog. The front‑end sampling frequency of the AD4080 must match
+the rotary switch setting on the evaluation board—this is typically <strong>40 MHz</strong>,
+and the script assumes this value when performing frequency‑domain analysis.</p>
+<p>Once the hardware is powered and connected, run the script using Python. A
+graphical configuration interface will launch automatically, allowing you to
+configure key signal and system parameters, including:</p>
+<ul class="simple">
+<li><p><strong>Fundamental frequency</strong> of the generated signal</p></li>
+<li><p><strong>Signal amplitude</strong> specified in dBFS</p></li>
+</ul>
+<p><strong>Tab to change parameters</strong></p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/ad4080_sink1.png"><img alt="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/ad4080_sink1.png" src="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/ad4080_sink1.png" width="450" />
+</a>
+</figure>
+<p>Default harmonic tones and additional noise components are included to generate
+a spectrally rich test signal suitable for frequency‑domain evaluation.</p>
+<p>After configuration, the script programs the ADALM2000 to generate a coherent
+waveform containing the specified fundamental tone, harmonics, and noise
+components. The waveform is transmitted continuously from the M2K, while the
+AD4080 captures a buffer of ADC samples corresponding to the applied stimulus.</p>
+<p>Once data acquisition completes, the script converts raw ADC codes into voltage
+units, normalizes the data to full scale, and performs a Fourier analysis on the
+captured samples. The resulting plots display the time‑domain waveform and the
+frequency‑domain spectrum, highlighting the fundamental tone, harmonics, and
+noise floor.</p>
+<p><strong>Expected Outputs</strong></p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/ad4080_sink2.png"><img alt="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/ad4080_sink2.png" src="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/ad4080_sink2.png" width="900" />
+</a>
+</figure>
+<p>This script demonstrates the use of the AD4080 as a high‑resolution data sink in
+a mixed‑signal measurement setup. By combining controlled signal generation with
+FFT‑based analysis, it enables verification of signal fidelity, scaling
+assumptions, and frequency‑domain behavior in a repeatable and closely
+controlled environment.</p>
 </section>
-<section id="for-intel-agilex-7-i-series-fm87">
-<h4>For Intel Agilex 7 I-Series (<a class="icon link reference external" href="https://www.intel.com/content/www/us/en/products/details/fpga/development-kits/agilex/si-agi027.html" target="_blank">FM87</a>)<a class="headerlink" href="#for-intel-agilex-7-i-series-fm87" title="Link to this heading"></a></h4>
-<p>Update the <code class="docutils literal notranslate"><span class="pre">arch/arm64/configs/adi_zynqmp_defconfig</span></code> file to include
-the generated <code class="docutils literal notranslate"><span class="pre">.bin</span></code> under the <code class="docutils literal notranslate"><span class="pre">CONFIG_EXTRA_FIRMWARE</span></code> option:</p>
-<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>user@analog:~$
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>linux
-</pre></div>
-</div>
-<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>user@analog:~/linux$
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/^CONFIG_EXTRA_FIRMWARE=&quot;/&amp;new_profile.bin /&#39;</span><span class="w"> </span>arch/arm64/configs/adi_zynqmp_defconfig
-</pre></div>
-</div>
-<div class="clear-left"></div></div><div><div class="no-select highlight-text notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>user@analog:~/linux$
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>arch/arm64/configs/adi_zynqmp_defconfig<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">&#39;CONFIG_EXTRA_FIRMWARE=&#39;</span>
-</pre></div>
-</div>
-<div class="clear-left"></div></div><div><div class="no-select highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG_EXTRA_FIRMWARE=&quot;new_profile.bin APOLLO_FW_CPU1_B.bin &lt;...&gt;&quot;
-</pre></div>
-</div>
-<div class="clear-left"></div></div></div><p>You can then follow the <a class="reference internal" href="../../solutions/reference-designs/ad9084_ebz/quickstart/agilex.html#ad9084-agilex-linux"><span class="std std-ref">Linux kernel build flow</span></a>
-to build the kernel and boot it on the board.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">adi,device-profile-fw-name</span></code> property must also be updated
-in the device tree to match the name of the newly generated profile.</p>
-</div>
+<section id="using-the-interactive-sinc-folding-script">
+<h2>Using the Interactive Sinc Folding Script<a class="headerlink" href="#using-the-interactive-sinc-folding-script" title="Link to this heading"></a></h2>
+<p>To run the Sinc Folding Interactive script, begin by connecting the ADALM2000
+(M2K) and the AD4080 evaluation board to your computer. When prompted, select the
+appropriate serial port for the AD4080 and the correct LibIIO URI for the M2K.</p>
+<p>Ensure that the front-end sampling frequency of the AD4080 matches the rotary
+switch setting on the evaluation board. The script assumes a nominal input
+sampling frequency of 40 MHz, which is divided by the selected decimation ratio
+to determine the effective output data rate.</p>
+<p>Once the devices are selected, run the script using Python. An interactive
+graphical interface launches automatically and allows you to adjust parameters
+such as:</p>
+<ul class="simple">
+<li><p><strong>Decimation ratio (OSR)</strong></p></li>
+<li><p><strong>Digital filter type (sinc1, sinc5, sinc5 + PF)</strong></p></li>
+<li><p><strong>Noise bandwidth</strong></p></li>
+<li><p><strong>Noise spectral density</strong></p></li>
+</ul>
+<p>During operation, the script programs the ADALM2000 to generate a band-limited
+noise signal centered at a selectable frequency. The noise amplitude is
+automatically constrained to remain within the M2K output voltage limits. The
+AD4080 captures the resulting ADC output while applying the selected digital
+filter and decimation configuration.</p>
+<p><strong>Expected Outputs</strong></p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/sinc_inter.png"><img alt="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/sinc_inter.png" src="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/sinc_inter.png" width="900" />
+</a>
+</figure>
+<p>As parameters are adjusted, the displayed frequency-domain data updates in real
+time, clearly showing how noise folds into the baseband and how the sinc filter
+shapes the spectrum. This interactive behavior makes the impact of digital
+filtering and decimation immediately visible and intuitive.</p>
 </section>
+<section id="using-the-noise-sweep-script">
+<h2>Using the Noise Sweep Script<a class="headerlink" href="#using-the-noise-sweep-script" title="Link to this heading"></a></h2>
+<p>To run the noise bandwidth sweep script, begin by connecting the ADALM2000 (M2K)
+and the AD4080 evaluation board to your computer. When prompted, select the
+appropriate serial port for the AD4080 and the correct LibIIO URI for the M2K.</p>
+<p>Ensure that the front-end sampling frequency of the AD4080 matches the rotary
+switch setting on the evaluation board. The script assumes a fixed input
+sampling frequency of 40 MHz when calculating filter notch locations, frequency
+axes, and noise bandwidth.</p>
+<p>Once the devices are selected, run the script using Python. A control window
+appears that allows you to select the desired digital filter type and enter the
+oversampling ratio (OSR). Pressing the <strong>Start sweep</strong> button initiates the
+measurement.</p>
+<p>During operation, the script configures the ADALM2000 to generate band-limited
+noise whose bandwidth increases incrementally from DC. At each step, the AD4080
+captures a block of ADC samples while applying the selected digital filter and
+decimation settings. DC offset is removed from the captured data, and the RMS
+noise is computed using the standard deviation of the signal.</p>
+<p><strong>Expected Outputs</strong></p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/noisesweep.png"><img alt="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/noisesweep.png" src="https://media.githubusercontent.com/media/r4yamnghs/documentation/main/docs/learning/sp_concepts_with_mmsc/noisesweep.png" width="900" />
+</a>
+</figure>
+<p>The script generates multiple plots, including time-domain ADC data and its
+corresponding frequency spectrum at the final sweep point, total integrated
+noise as a function of noise bandwidth, and incremental noise spectral density.
+Measured results are overlaid with analytical reference curves based on ideal
+rectangular noise and sinc-filter responses, allowing direct comparison between
+theoretical expectations and measured behavior.</p>
 </section>
+<section id="practical-notes">
+<h2>Practical Notes<a class="headerlink" href="#practical-notes" title="Link to this heading"></a></h2>
+<p>Frequency sweep analysis provides a convenient method for validating ADC
+performance and clock behavior over a range of input frequencies. Unlike
+single-frequency measurements, sweep-based FFT analysis reveals trends,
+bandwidth limitations, and frequency-dependent behavior while still avoiding
+the need for precise time-domain alignment.</p>
 </section>
 </section>
 
@@ -966,8 +1094,8 @@ in the device tree to match the name of the newly generated profile.</p>
           </div>
               <div class="related">
                 &nbsp;
-    <a href="../../linux/kuiper/index.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev">Kuiper</a>
-    <a href="../analog-attach/index.html" title="Next document (Alt+Shift+RightArrow)" class="next">Analog Attach</a>
+    <a href="../tools_for_hs/index.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev">Tools for High-Speed Mixed Signal System Design</a>
+    <a href="../workshop_what_sw_for_sdr/index.html" title="Next document (Alt+Shift+RightArrow)" class="next">What software do I need for my SDR?</a>
               </div>
           
         </div>
